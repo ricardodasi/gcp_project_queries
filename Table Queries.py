@@ -152,7 +152,34 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.description') AS event_name
 			,JSON_EXTRACT(document,'$.init_date') AS init_date 
 			,JSON_EXTRACT(document,'$.local.name') AS local_name
-			,JSON_EXTRACT(document,'$.localId') AS local_id 
+			,JSON_EXTRACT(document,'$.localId') AS local_id
+
+			,JSON_EXTRACT(document,'$.oneDayPlan.opens') AS one_day_plan_opening_time
+			,JSON_EXTRACT(document,'$.oneDayPlan.closes') AS one_day_plan_closing_time
+			,JSON_EXTRACT(document,'$.oneDayPlan.cover.amount')  AS cover_price
+			,JSON_EXTRACT(document,'$.oneDayPlan.cover.currency') AS currency
+
+			,JSON_EXTRACT(document,'$.local.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.monday.closes') AS monday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.friday.closes') AS friday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
+
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -184,6 +211,33 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.local.name') AS local_name #str
 			,JSON_EXTRACT(document,'$.thatsIncluded') AS thats_included #str
 			,JSON_EXTRACT(document,'$.toDo') AS to_do #str
+
+			,JSON_EXTRACT(document,'$.oneDayPlan.opens') AS one_day_plan_opening_time
+			,JSON_EXTRACT(document,'$.oneDayPlan.closes') AS one_day_plan_closing_time
+			,JSON_EXTRACT(document,'$.oneDayPlan.cover.amount')  AS cover_price
+			,JSON_EXTRACT(document,'$.oneDayPlan.cover.currency') AS currency
+
+			,JSON_EXTRACT(document,'$.local.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.monday.closes') AS monday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.friday.closes') AS friday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
+
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -376,10 +430,31 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.musicGenre.keyword') AS music_genre_keyword #str
 			,JSON_EXTRACT(document,'$.musicGenre.schedule') AS schedule #str
 
+			,JSON_EXTRACT(document,'$.local.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.monday.closes') AS monday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
+
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.friday.closes') AS friday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
+
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
+
+
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
 									) AS row_number	
-
 
 
 	FROM  events.raw_events
@@ -491,6 +566,28 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.promotion_id') AS promotion_id #str
 			,JSON_EXTRACT(document,'$.plan') AS scheduled_plan	#str	
 
+			,JSON_EXTRACT(document,'$.plan.monday.init') AS monday_init_time
+			,JSON_EXTRACT(document,'$.plan.monday.end') AS monday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.tuesday.init') AS tuesday_init_time
+			,JSON_EXTRACT(document,'$.plan.tuesday.end') AS tuesday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.wednesday.init') AS wednesday_init_time
+			,JSON_EXTRACT(document,'$.plan.wednesday.end') AS wednesday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.thursday.init') AS thursday_init_time
+			,JSON_EXTRACT(document,'$.plan.thursday.end') AS thursday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.friday.init') AS friday_init_time
+			,JSON_EXTRACT(document,'$.plan.friday.end') AS friday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.saturday.init') AS saturday_init_time
+			,JSON_EXTRACT(document,'$.plan.saturday.end') AS saturday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.sunday.init') AS sunday_init_time
+			,JSON_EXTRACT(document,'$.plan.sunday.end') AS sunday_end_time
+
+
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
 									) AS row_number	
@@ -503,7 +600,6 @@ WITH latest_events AS (
 SELECT * EXCEPT (row_number)
 FROM latest_events
 WHERE row_number = 1
-
 
 
 # 19 promotion_local
@@ -522,6 +618,27 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.remaining_events') AS remaining_events #int
 			,JSON_EXTRACT(document,'$.remaining_number_of_promotions') AS remaining_number_of_promotions #int 
 			,JSON_EXTRACT(document,'$.plan') AS scheduled_plan #str
+
+			,JSON_EXTRACT(document,'$.plan.monday.init') AS monday_init_time
+			,JSON_EXTRACT(document,'$.plan.monday.end') AS monday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.tuesday.init') AS tuesday_init_time
+			,JSON_EXTRACT(document,'$.plan.tuesday.end') AS tuesday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.wednesday.init') AS wednesday_init_time
+			,JSON_EXTRACT(document,'$.plan.wednesday.end') AS wednesday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.thursday.init') AS thursday_init_time
+			,JSON_EXTRACT(document,'$.plan.thursday.end') AS thursday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.friday.init') AS friday_init_time
+			,JSON_EXTRACT(document,'$.plan.friday.end') AS friday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.saturday.init') AS saturday_init_time
+			,JSON_EXTRACT(document,'$.plan.saturday.end') AS saturday_end_time
+
+			,JSON_EXTRACT(document,'$.plan.sunday.init') AS sunday_init_time
+			,JSON_EXTRACT(document,'$.plan.sunday.end') AS sunday_end_time
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
