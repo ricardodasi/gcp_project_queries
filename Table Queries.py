@@ -430,26 +430,31 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.musicGenre.keyword') AS music_genre_keyword #str
 			,JSON_EXTRACT(document,'$.musicGenre.schedule') AS schedule #str
 
-			,JSON_EXTRACT(document,'$.local.schedule.monday.opens') AS monday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.monday.closes') AS monday_closing_time	
+			,JSON_EXTRACT(document,'$.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.monday.closes') AS monday_closing_time	
 
-			,JSON_EXTRACT(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
+			,JSON_EXTRACT(document,'$.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.tuesday.closes') AS tuesday_closing_time	
 
-			,JSON_EXTRACT(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
+			,JSON_EXTRACT(document,'$.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.wednesday.closes') AS wednesday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
+			,JSON_EXTRACT(document,'$.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.thursday.closes') AS thursday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.friday.opens') AS friday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.friday.closes') AS friday_closing_time
+			,JSON_EXTRACT(document,'$.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.friday.closes') AS friday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
+			,JSON_EXTRACT(document,'$.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.saturday.closes') AS saturday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
+			,JSON_EXTRACT(document,'$.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT(document,'$.schedule.sunday.closes') AS sunday_closing_time
+
+			,JSON_EXTRACT(document,'$.schedule.sunday.closes') AS sunday_closing_time
+
+			,JSON_EXTRACT(document,'$.zone.name') AS zone_name
+			,JSON_EXTRACT(document,'$.mood.name') AS mood_name
 
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
@@ -846,7 +851,7 @@ WITH latest_events AS (
 			,JSON_EXTRACT(document,'$.moods.rooftop') AS mood_rooftop #int
 			,JSON_EXTRACT(document,'$.moods.happy Hour') AS	mood_happy_hour #int
 			,JSON_EXTRACT(document,'$.moods.rumba') AS mood_rumba #int 
-			,JSON_EXTRACT(document,'$.moods.hasta las 5am')  AS mood_hasta_las_5_am
+			,JSON_EXTRACT(document,'$.moods.hasta las 5am')  AS mood_hasta_las_5_am #int
 
 			#all music genres extraction 
 
@@ -896,3 +901,29 @@ FROM latest_events
 WHERE row_number = 1
 
 
+###########################################################################################
+
+
+#Queries for requested dashboards
+
+#4 zona
+
+WITH promotions_by_zone AS(
+
+	SELECT 	b.zone_name
+			,a.promotion_id
+			,a.local_id
+			,b.mood_name #type of liquor 
+
+
+	FROM staging.promotion_local_staging AS a
+
+	LEFT JOIN staging.locals_staging AS b
+
+	ON  a.local_id = b.document_id
+
+)
+
+SELECT *
+
+FROM 
