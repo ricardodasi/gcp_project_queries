@@ -827,3 +827,72 @@ WITH latest_events AS (
 SELECT * EXCEPT (row_number)
 FROM latest_events
 WHERE row_number = 1
+
+
+# 27  statics
+
+WITH latest_events AS (
+
+	SELECT document_id
+			,timestamp
+
+			#all moods extractions 
+
+			,JSON_EXTRACT(document,'$.moods.karaoke') AS mood_karaoke #int
+			,JSON_EXTRACT(document,'$.moods.after Office') AS mood_after_office #int
+			,JSON_EXTRACT(document,'$.moods.el Pre') AS mood_el_pre #int
+			,JSON_EXTRACT(document,'$.moods.cervezas') AS mood_cervezas #int
+			,JSON_EXTRACT(document,'$.moods.cocktails') AS mood_cocktails #int
+			,JSON_EXTRACT(document,'$.moods.rooftop') AS mood_rooftop #int
+			,JSON_EXTRACT(document,'$.moods.happy Hour') AS	mood_happy_hour #int
+			,JSON_EXTRACT(document,'$.moods.rumba') AS mood_rumba #int 
+			,JSON_EXTRACT(document,'$.moods.hasta las 5am')  AS mood_hasta_las_5_am
+
+			#all music genres extraction 
+
+			,JSON_EXTRACT(document,'$.musicGenre.jazz') AS music_genre_jazz #int
+			,JSON_EXTRACT(document,'$.musicGenre.reggaetón') AS music_genre_reggaeton #int
+			,JSON_EXTRACT(document,'$.musicGenre.crossover') AS music_genre_crossover #int 
+			,JSON_EXTRACT(document,'$.musicGenre.brasileña') AS music_genre_brasilena #int
+			,JSON_EXTRACT(document,"$.musicGenre.80s - 90s") AS music_genre_8090s #int  #REVIEW ORIGINAL FIELD NAME: 80's - 90's
+			,JSON_EXTRACT(document,'$.musicGenre.latina') AS music_genre_latina #int 
+			,JSON_EXTRACT(document,'$.musicGenre.mexicana/ranchera') AS music_genre_mexicana_ranchera #int #REVIEW ORIGINAL FIELD NAME: Mexicana/Ranchera'
+			,JSON_EXTRACT(document,'$.musicGenre.champeta') AS music_genre_champeta #int
+			,JSON_EXTRACT(document,'$.musicGenre.lounge') AS music_genre_lounge #int 
+			,JSON_EXTRACT(document,'$.musicGenre.electrónica') AS music_genre_electronica #int 
+			,JSON_EXTRACT(document,'$.musicGenre.rock') AS music_genre_rock #int
+			,JSON_EXTRACT(document,'$.musicGenre.indie') AS music_genre_indie #int
+
+			#all zones extraction 
+
+			,JSON_EXTRACT(document,'$.zones.zona g') AS zones_zona_g #int  			
+			,JSON_EXTRACT(document,'$.zones.quinta camacho') AS zones_quinta_camacho #int
+			,JSON_EXTRACT(document,'$.zones.engativá') AS  zones_engativa #int 
+			,JSON_EXTRACT(document,'$.zones.chapinero') AS zones_chapinero #int 
+			,JSON_EXTRACT(document,'$.zones.chía') AS zones_chia #int
+			,JSON_EXTRACT(document,'$.zones.la 93') AS zones_la_93 #int 
+			,JSON_EXTRACT(document,'$.zones.usaquén') AS zones_usaquen #int
+			,JSON_EXTRACT(document,'$.zones.cedritos') AS zones_cedritos #int 
+			,JSON_EXTRACT(document,'$.zones.la 85') AS zones_la_85 #int 
+			,JSON_EXTRACT(document,'$.zones.zona t') AS zones_zona_t #int
+			,JSON_EXTRACT(document,'$.zones.galerías') AS zones_galerias #int 
+			,JSON_EXTRACT(document,'$.zones.san felipe') AS zones_san_felipe #int
+			,JSON_EXTRACT(document,'$.zones.teusaquillo') AS zones_teusaquillo #int 
+			,JSON_EXTRACT(document,'$.zones.centro') AS zones_centro #int 
+
+
+			,ROW_NUMBER() OVER (PARTITION BY document_id
+									ORDER BY timestamp DESC 
+									)	 AS row_number
+
+
+	FROM  events.raw_events
+
+	WHERE document_collection = 'statics'
+
+)
+SELECT * EXCEPT (row_number)
+FROM latest_events
+WHERE row_number = 1
+
+
