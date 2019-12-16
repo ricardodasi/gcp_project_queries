@@ -906,24 +906,85 @@ WHERE row_number = 1
 
 #Queries for requested dashboards
 
-#4 zona
 
-WITH promotions_by_zone AS(
+#tabla para promociones con demografia para data studio tabla 1
 
-	SELECT 	b.zone_name
-			,a.promotion_id
-			,a.local_id
-			,b.mood_name #type of liquor 
+WITH promotion_redention_with_users AS(
 
+	SELECT locals.promotion_id,
+			locals.local_id,
+			locals.init_time,
+			locals.end_time,
+			locals.init_date,
+			locals.end_date,
 
-	FROM staging.promotion_local_staging AS a
+			redention.promotion_local_id,
+			redention.redemption_date,
+			redention.user_id,
 
-	LEFT JOIN staging.locals_staging AS b
+			users_staging.gender,
+			users_staging.age,
+			users_staging.city,
+			users_staging.university,
 
-	ON  a.local_id = b.document_id
+			zone.zone_name,
+			zone.zone_mood,
+			zone.name
+
+	FROM staging.promotion_local_redemptions_staging AS redention 
+
+	LEFT JOIN staging.users_staging  users ON  redention.user_id = users.document_id  
+
+	JOIN staging.promotion_local_staging  locals ON redention.promotion_local_id = locals.document_id 
+
+	JOIN staging.locals zone ON locals.local_id = zone.document_id
 
 )
 
-SELECT *
+SELECT promotions.promotion_name,
+		promotions.type,
 
-FROM 
+		user_redentions.redemption_date,
+		user_redentions.user_id,
+		user_redentions.gender,
+		user_redentions.age,
+		user_redentions.city,
+		user_redentions.university,
+		user_redentions.zone_name,
+		user_redentions.zone_mood,
+		user_redentions.name,
+		user_redentions.init_time,
+		user_redentions.end_time,
+		user_redentions.init_date,
+		user_redentions.end_date,
+
+
+FROM staging.promotion_staging AS promotions
+
+JOIN  promotion_redention_with_users AS user_redentions ON promotions.document_id = user_redentions.promotion_id
+
+
+#tabla 2 arroja cada evento de like con el nombre del local y el nombre del evento
+
+
+WITH local_evento AS(
+
+	SELECT events.event_name,
+			events.local_id
+
+	FROM  staging.events_staging AS events
+
+	JOIN staging.event_likes_staging likes ON events.document_id = likes.event_id 
+
+
+)
+
+SELECT locals.local_name,
+		local_evento.event_name,
+
+FROM staging.locals_staging AS  locals 
+
+JOIN local_evento ON locals.document_id = local_evento.local_id 
+
+
+#tabla 3 hacer likes por local
