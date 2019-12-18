@@ -68,8 +68,8 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.event_id') AS event_id #string
-			,JSON_EXTRACT(document,'$.user_id') AS user_id #string
+			,JSON_EXTRACT_SCALAR(document,'$.event_id') AS event_id #string
+			,JSON_EXTRACT_SCALAR(document,'$.user_id') AS user_id #string
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -149,36 +149,36 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.description') AS event_name
-			,JSON_EXTRACT(document,'$.init_date') AS init_date 
-			,JSON_EXTRACT(document,'$.local.name') AS local_name
-			,JSON_EXTRACT(document,'$.localId') AS local_id
+			,JSON_EXTRACT_SCALAR(document,'$.description') AS event_name
+			,JSON_EXTRACT_SCALAR(document,'$.init_date') AS init_date 
+			,JSON_EXTRACT_SCALAR(document,'$.local.name') AS local_name
+			,JSON_EXTRACT_SCALAR(document,'$.localId') AS local_id
 
-			,JSON_EXTRACT(document,'$.oneDayPlan.opens') AS one_day_plan_opening_time
-			,JSON_EXTRACT(document,'$.oneDayPlan.closes') AS one_day_plan_closing_time
-			,JSON_EXTRACT(document,'$.oneDayPlan.cover.amount')  AS cover_price
-			,JSON_EXTRACT(document,'$.oneDayPlan.cover.currency') AS currency
+			,JSON_EXTRACT_SCALAR(document,'$.oneDayPlan.opens') AS one_day_plan_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.oneDayPlan.closes') AS one_day_plan_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.oneDayPlan.cover.amount')  AS cover_price
+			,JSON_EXTRACT_SCALAR(document,'$.oneDayPlan.cover.currency') AS currency
 
-			,JSON_EXTRACT(document,'$.local.schedule.monday.opens') AS monday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.monday.closes') AS monday_closing_time	
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.monday.closes') AS monday_closing_time	
 
-			,JSON_EXTRACT(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.tuesday.closes') AS tuesday_closing_time	
 
-			,JSON_EXTRACT(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.wednesday.closes') AS wednesday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.thursday.closes') AS thursday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.friday.opens') AS friday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.friday.closes') AS friday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.friday.closes') AS friday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.saturday.closes') AS saturday_closing_time
 
-			,JSON_EXTRACT(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
-			,JSON_EXTRACT(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.local.schedule.sunday.closes') AS sunday_closing_time
 
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
@@ -940,10 +940,10 @@ WITH promotion_redention_with_users AS(
 SELECT promotions.promotion_name,
 		promotions.type,
 		EXTRACT(HOUR FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_hour,
-    FORMAT_DATE('%A', EXTRACT(DATE FROM CAST(user_redentions.redemption_date AS TIMESTAMP))) AS week_day ,
-    EXTRACT(MONTH FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_month,
-    EXTRACT(WEEK FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_week,
-    user_redentions.redemption_date,
+    	FORMAT_DATE('%A', EXTRACT(DATE FROM CAST(user_redentions.redemption_date AS TIMESTAMP))) AS week_day ,
+	    EXTRACT(MONTH FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_month,
+	    EXTRACT(WEEK FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_week,
+	    user_redentions.redemption_date,
 		user_redentions.user_id,
 		user_redentions.gender,
 		user_redentions.age,
@@ -964,34 +964,32 @@ JOIN  promotion_redention_with_users AS user_redentions ON promotions.document_i
 
 
 
-#tabla 2 arroja cada evento de like con el nombre del local y el nombre del evento
+#tabla 2 likes
 
 
-WITH local_evento AS(
+WITH local_likes AS(
 
-	SELECT events.event_name,
-			events.local_id
+	SELECT likes.*
+			,locals.local_name
+			,events.local_id
+			,events.event_name
 
-	FROM  staging.events_staging AS events
+	FROM staging.event_likes_staging likes
 
-	JOIN staging.event_likes_staging likes ON events.document_id = likes.event_id 
+	LEFT JOIN staging.events_staging events ON likes.event_id = events.document_id
+
+	LEFT JOIN staging.locals_staging locals ON  events.local_id = locals.document_id
 
 
 )
 
-SELECT locals.local_name,
-		local_evento.event_name,
+SELECT *
 
-FROM staging.locals_staging AS  locals 
-
-JOIN local_evento ON locals.document_id = local_evento.local_id 
-
-
-
-
+FROM local_likes
 
 
 #tabla 3 hacer likes por local
+
 
 
 /*
@@ -1004,10 +1002,9 @@ promotion_local_staging check
 locals_staging CHECK
 promotions_staging CHECK
 
-
-
-events_staging
-event_likes_staging
+events_staging CHECK
+event_likes_staging CHECK
 
 
 *\
+
