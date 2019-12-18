@@ -425,36 +425,34 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.name') AS local_name #str
-			,JSON_EXTRACT(document,'$.discountPercentage') AS discount_percentage #int
-			,JSON_EXTRACT(document,'$.musicGenre.keyword') AS music_genre_keyword #str
-			,JSON_EXTRACT(document,'$.musicGenre.schedule') AS schedule #str
+			,JSON_EXTRACT_SCALAR(document,'$.name') AS local_name #str
+			,JSON_EXTRACT_SCALAR(document,'$.discountPercentage') AS discount_percentage #int
+			,JSON_EXTRACT_SCALAR(document,'$.musicGenre.keyword') AS music_genre_keyword #str
+			,JSON_EXTRACT_SCALAR(document,'$.musicGenre.schedule') AS schedule #str
 
-			,JSON_EXTRACT(document,'$.schedule.monday.opens') AS monday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.monday.closes') AS monday_closing_time	
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.monday.opens') AS monday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.monday.closes') AS monday_closing_time	
 
-			,JSON_EXTRACT(document,'$.schedule.tuesday.opens') AS tuesday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.tuesday.closes') AS tuesday_closing_time	
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.tuesday.opens') AS tuesday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.tuesday.closes') AS tuesday_closing_time	
 
-			,JSON_EXTRACT(document,'$.schedule.wednesday.opens') AS wednesday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.wednesday.closes') AS wednesday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.wednesday.opens') AS wednesday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.wednesday.closes') AS wednesday_closing_time
 
-			,JSON_EXTRACT(document,'$.schedule.thursday.opens') AS thursday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.thursday.closes') AS thursday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.thursday.opens') AS thursday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.thursday.closes') AS thursday_closing_time
 
-			,JSON_EXTRACT(document,'$.schedule.friday.opens') AS friday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.friday.closes') AS friday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.friday.opens') AS friday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.friday.closes') AS friday_closing_time
 
-			,JSON_EXTRACT(document,'$.schedule.saturday.opens') AS saturday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.saturday.closes') AS saturday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.saturday.opens') AS saturday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.saturday.closes') AS saturday_closing_time
 
-			,JSON_EXTRACT(document,'$.schedule.sunday.opens') AS sunday_opening_time
-			,JSON_EXTRACT(document,'$.schedule.sunday.closes') AS sunday_closing_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.sunday.opens') AS sunday_opening_time
+			,JSON_EXTRACT_SCALAR(document,'$.schedule.sunday.closes') AS sunday_closing_time
 
-			,JSON_EXTRACT(document,'$.schedule.sunday.closes') AS sunday_closing_time
-
-			,JSON_EXTRACT(document,'$.zone.name') AS zone_name
-			,JSON_EXTRACT(document,'$.mood.name') AS mood_name
+			,JSON_EXTRACT_SCALAR(document,'$.zone.name') AS zone_name
+			,JSON_EXTRACT_SCALAR(document,'$.mood.name') AS mood_name
 
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
@@ -613,37 +611,37 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.local_id') AS local_id #str
-			,JSON_EXTRACT(document,'$.init_date') AS init_date #str
-			,JSON_EXTRACT(document,'$.init_time') AS init_time #str
-			,JSON_EXTRACT(document,'$.end_date') AS end_date #str
-			,JSON_EXTRACT(document,'$.end_time') AS end_time #str 
-			,JSON_EXTRACT(document,'$.max_events') AS max_events #int
-			,JSON_EXTRACT(document,'$.promotion_id') AS promotion_id #str
-			,JSON_EXTRACT(document,'$.remaining_events') AS remaining_events #int
-			,JSON_EXTRACT(document,'$.remaining_number_of_promotions') AS remaining_number_of_promotions #int 
-			,JSON_EXTRACT(document,'$.plan') AS scheduled_plan #str
+			,JSON_EXTRACT_SCALAR(document,'$.local_id') AS local_id #str
+			,JSON_EXTRACT_SCALAR(document,'$.init_date') AS init_date #str
+			,JSON_EXTRACT_SCALAR(document,'$.init_time') AS init_time #str
+			,JSON_EXTRACT_SCALAR(document,'$.end_date') AS end_date #str
+			,JSON_EXTRACT_SCALAR(document,'$.end_time') AS end_time #str 
+			,JSON_EXTRACT_SCALAR(document,'$.max_events') AS max_events #int
+			,JSON_EXTRACT_SCALAR(document,'$.promotion_id') AS promotion_id #str
+			,JSON_EXTRACT_SCALAR(document,'$.remaining_events') AS remaining_events #int
+			,JSON_EXTRACT_SCALAR(document,'$.remaining_number_of_promotions') AS remaining_number_of_promotions #int 
+			,JSON_EXTRACT_SCALAR(document,'$.plan') AS scheduled_plan #str
 
-			,JSON_EXTRACT(document,'$.plan.monday.init') AS monday_init_time
-			,JSON_EXTRACT(document,'$.plan.monday.end') AS monday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.monday.init') AS monday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.monday.end') AS monday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.tuesday.init') AS tuesday_init_time
-			,JSON_EXTRACT(document,'$.plan.tuesday.end') AS tuesday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.tuesday.init') AS tuesday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.tuesday.end') AS tuesday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.wednesday.init') AS wednesday_init_time
-			,JSON_EXTRACT(document,'$.plan.wednesday.end') AS wednesday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.wednesday.init') AS wednesday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.wednesday.end') AS wednesday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.thursday.init') AS thursday_init_time
-			,JSON_EXTRACT(document,'$.plan.thursday.end') AS thursday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.thursday.init') AS thursday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.thursday.end') AS thursday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.friday.init') AS friday_init_time
-			,JSON_EXTRACT(document,'$.plan.friday.end') AS friday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.friday.init') AS friday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.friday.end') AS friday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.saturday.init') AS saturday_init_time
-			,JSON_EXTRACT(document,'$.plan.saturday.end') AS saturday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.saturday.init') AS saturday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.saturday.end') AS saturday_end_time
 
-			,JSON_EXTRACT(document,'$.plan.sunday.init') AS sunday_init_time
-			,JSON_EXTRACT(document,'$.plan.sunday.end') AS sunday_end_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.sunday.init') AS sunday_init_time
+			,JSON_EXTRACT_SCALAR(document,'$.plan.sunday.end') AS sunday_end_time
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -691,9 +689,9 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.promotion_local_id') AS promotion_local_id #str
-			,JSON_EXTRACT(document,'$.redemption_date') AS redemption_date #str
-			,JSON_EXTRACT(document,'$.user_id') AS user_id #str
+			,JSON_EXTRACT_SCALAR(document,'$.promotion_local_id') AS promotion_local_id #str
+			,JSON_EXTRACT_SCALAR(document,'$.redemption_date') AS redemption_date #str
+			,JSON_EXTRACT_SCALAR(document,'$.user_id') AS user_id #str
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -709,19 +707,17 @@ WHERE row_number = 1
 
 
 
-
-
 # 22 promotions
 
 WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.name') AS promotion_name #str
-			,JSON_EXTRACT(document,'$.createAt') AS created_at #str
-			,JSON_EXTRACT(document,'$.gouPromotions') AS gou_promotions #int 
-			,JSON_EXTRACT(document,'$.ownerId') AS owner_id #str
-			,JSON_EXTRACT(document,'$.type.type') AS type #str
+			,JSON_EXTRACT_SCALAR(document,'$.name') AS promotion_name #str
+			,JSON_EXTRACT_SCALAR(document,'$.createAt') AS created_at #str
+			,JSON_EXTRACT_SCALAR(document,'$.gouPromotions') AS gou_promotions #int 
+			,JSON_EXTRACT_SCALAR(document,'$.ownerId') AS owner_id #str
+			,JSON_EXTRACT_SCALAR(document,'$.type.type') AS type #str
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -789,13 +785,13 @@ WITH latest_events AS (
 
 	SELECT document_id
 			,timestamp
-			,JSON_EXTRACT(document,'$.age') AS age #int
-			,JSON_EXTRACT(document,'$.birthdate') AS birthdate #str
-			,JSON_EXTRACT(document,'$.city') AS city #str 
-			,JSON_EXTRACT(document,'$.gender') AS gender #str
-			,JSON_EXTRACT(document,'$.job') AS job #str
-			,JSON_EXTRACT(document,'$.name') AS name #str 
-			,JSON_EXTRACT(document,'$.university') AS university #str
+			,JSON_EXTRACT_SCALAR(document,'$.age') AS age #int
+			,JSON_EXTRACT_SCALAR(document,'$.birthdate') AS birthdate #str
+			,JSON_EXTRACT_SCALAR(document,'$.city') AS city #str 
+			,JSON_EXTRACT_SCALAR(document,'$.gender') AS gender #str
+			,JSON_EXTRACT_SCALAR(document,'$.job') AS job #str
+			,JSON_EXTRACT_SCALAR(document,'$.name') AS name #str 
+			,JSON_EXTRACT_SCALAR(document,'$.university') AS university #str
 
 			,ROW_NUMBER() OVER (PARTITION BY document_id
 									ORDER BY timestamp DESC 
@@ -922,14 +918,14 @@ WITH promotion_redention_with_users AS(
 			redention.redemption_date,
 			redention.user_id,
 
-			users_staging.gender,
-			users_staging.age,
-			users_staging.city,
-			users_staging.university,
+			users.gender,
+			users.age,
+			users.city,
+			users.university,
 
 			zone.zone_name,
-			zone.zone_mood,
-			zone.name
+			zone.mood_name,
+			zone.local_name
 
 	FROM staging.promotion_local_redemptions_staging AS redention 
 
@@ -937,31 +933,35 @@ WITH promotion_redention_with_users AS(
 
 	JOIN staging.promotion_local_staging  locals ON redention.promotion_local_id = locals.document_id 
 
-	JOIN staging.locals zone ON locals.local_id = zone.document_id
+	JOIN staging.locals_staging zone ON locals.local_id = zone.document_id
 
 )
 
 SELECT promotions.promotion_name,
 		promotions.type,
-
-		user_redentions.redemption_date,
+		EXTRACT(HOUR FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_hour,
+    FORMAT_DATE('%A', EXTRACT(DATE FROM CAST(user_redentions.redemption_date AS TIMESTAMP))) AS week_day ,
+    EXTRACT(MONTH FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_month,
+    EXTRACT(WEEK FROM CAST(user_redentions.redemption_date AS TIMESTAMP)) AS redemption_week,
+    user_redentions.redemption_date,
 		user_redentions.user_id,
 		user_redentions.gender,
 		user_redentions.age,
 		user_redentions.city,
 		user_redentions.university,
 		user_redentions.zone_name,
-		user_redentions.zone_mood,
-		user_redentions.name,
+		user_redentions.mood_name,
+		user_redentions.local_name,
 		user_redentions.init_time,
 		user_redentions.end_time,
 		user_redentions.init_date,
-		user_redentions.end_date,
+		user_redentions.end_date
 
 
-FROM staging.promotion_staging AS promotions
+FROM staging.promotions_staging AS promotions
 
 JOIN  promotion_redention_with_users AS user_redentions ON promotions.document_id = user_redentions.promotion_id
+
 
 
 #tabla 2 arroja cada evento de like con el nombre del local y el nombre del evento
@@ -987,4 +987,27 @@ FROM staging.locals_staging AS  locals
 JOIN local_evento ON locals.document_id = local_evento.local_id 
 
 
+
+
+
+
 #tabla 3 hacer likes por local
+
+
+/*
+
+tablas francesco bello
+
+users_staging CHECK
+promotion_local_redemptions_staging CHECK
+promotion_local_staging check
+locals_staging CHECK
+promotions_staging CHECK
+
+
+
+events_staging
+event_likes_staging
+
+
+*\
